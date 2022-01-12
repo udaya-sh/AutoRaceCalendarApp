@@ -1,0 +1,77 @@
+﻿@model AutoRaceCalendarApp.UI.Models.CircuitRaceViewModel
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>CircuitsRace</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Circuit.CircuitId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Circuit.CircuitId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Circuit.Country)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Circuit.City)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Circuit.Street)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Circuit.StreetNr)
+        </dd>
+    </dl>
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="Index">Back to List</a>
+</div>
+
+<table class="table table-danger">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Races.First().Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Races.First().StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Races.First().EndDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Races)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+      
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.RaceId }) |
+                    @Html.ActionLink("Details", "Details", "Race", new { id = item.RaceId }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.RaceId })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

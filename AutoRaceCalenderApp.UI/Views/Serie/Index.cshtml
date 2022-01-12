@@ -1,0 +1,97 @@
+﻿
+@model IEnumerable<AutoRaceCalendarApp.UI.Models.SerieViewModel>
+
+@{
+    ViewData["Title"] = "Series";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var pageNr = (int)TempData["pageNr"];
+    var currPage = pageNr;
+    pageNr++;
+    int _amount = (int)TempData["amount"];
+    var thirdPage = pageNr + 1;
+
+}
+
+<h1>All Series</h1>
+
+
+@if (TempData["Error"] != null)
+{
+    <div class="col-md-12 alert alert-danger">
+        <span>@TempData["Error"] </span>
+    </div>
+}
+
+
+<div class="">
+    <form asp-action="SetAmount">
+        <p>
+            <input type="text" name="amount" placeholder="Set Rows" class="input-group-lg form-control-sm text-center" />
+            <input type="submit" value="Apply" class="btn-sm btn-dark" />
+            <a class="btn btn-info addBtn " href="@Url.Action("Create", "Serie")">Create Serie</a>
+        </p>
+    </form>
+</div>
+
+
+
+
+    <div class="container">
+
+        <div class="row">
+            @foreach (var item in Model)
+            {
+
+                <div class="col-md-4 col-xl-3">
+                    <div class="card bg-c-green order-card">
+                        <div class="card-block">
+                            <h4 class="m-b-20 ">
+                                <a href="@Url.Action("Details", "Serie", new { id = item.SerieId })">
+                                   <span class="text-white"> @Html.DisplayFor(modelItem => item.Name)</span>
+                                </a>
+                            </h4>
+
+                            <div class="m-b-0 ">
+                                <span>
+                                    @if (item.EndDate is null || item.EndDate.Value > DateTime.Today)
+                                    {
+                                        <i class=" text-danger">Inactive</i>
+                                    }
+                                    else
+                                    {
+                                        <i class="text-success">Active</i>
+                                    }
+
+                                </span>
+                            </div>
+                            <a href="@Url.Action("Edit", "Serie", new { id = item.SerieId })">
+                                <i class="bi bi-pencil text-dark m-1"></i>
+                            </a>
+                            <a href="@Url.Action("Delete", "Serie", new { id = item.SerieId })">
+                                <i class="bi bi-trash text-danger"></i>
+                            </a>
+
+                        </div>
+                    </div>
+                </div>
+
+            }
+        </div>
+    </div>
+
+    <div>
+        @if (pageNr != 2)
+        {
+            <a class="btn btn-dark" href="@Url.Action("Index", "Serie",new { pageNr = pageNr - 2, amount = _amount })">Previous</a>
+        }
+
+        @if (TempData["Error"] is null)
+        {
+
+            <a class="btn btn-info">@currPage</a>
+            <a class="btn btn-dark" href="@Url.Action("Index", "Serie", new { pageNr = pageNr, amount = _amount })"> @pageNr </a>
+            <a class="btn btn-dark" href="@Url.Action("Index", "Serie", new { pageNr = pageNr + 1, amount = _amount })"> @thirdPage</a>
+            <a class="btn btn-dark" href="@Url.Action("Index", "Serie", new { pageNr = pageNr, amount = _amount })">Next</a>
+        }
+
+    </div>

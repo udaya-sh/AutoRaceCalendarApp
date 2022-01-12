@@ -1,0 +1,109 @@
+﻿@model IEnumerable<AutoRaceCalendarApp.UI.Models.SeasonViewModel>
+
+@{
+    ViewData["Title"] = "Seasons";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var pageNr = (int)TempData["pageNr"];
+    var currPage = pageNr;
+    pageNr++;
+    var thirdPage = pageNr + 1;
+
+}
+
+<h1 class="text-center center">All Seasons</h1>
+
+
+@if (TempData["Error"] != null)
+{
+    <div class="col-md-12 alert alert-danger">
+        <span>@TempData["Error"] </span>
+    </div>
+}
+<div>
+    <a class="btn btn-info  " href="@Url.Action("Create", "Season")">Create Season</a>
+
+
+</div>
+
+@if (TempData["Error"] is null)
+{
+
+    <table class="table bg-c-green order-card">
+        <thead>
+            <tr>
+                <th>
+                    <a class="text-dark" href="@Url.Action("Index", "Season", new { sortingChoice = 0 })">Serie</a>
+                </th>
+                <th>
+                    <a class="text-dark " href="@Url.Action("Index", "Season", new { sortingChoice = 1 })">Season</a>
+                </th>
+                <th>
+                    <a class="text-dark " href="@Url.Action("Index", "Season", new { sortingChoice = 2 })">Start Date</a>
+                </th>
+                <th>
+                    <a class="text-dark " href="@Url.Action("Index", "Season", new { sortingChoice = 3 })">End Date</a>
+
+                </th>
+                <th>
+                    <a class="text-dark " href="@Url.Action("Index", "Season", new { sortingChoice = 4 })">Active</a>
+
+                </th>
+                <th>
+                    <form asp-action="SetAmount" class="row">
+                        <input type="text" name="amount" placeholder="Set Rows" class=" form-control-sm  col-md-5 mr-1" />
+                        <input type="submit" value="Apply" class="btn-sm btn-dark" />
+                    </form>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+
+                <tr>
+                    <td>
+                        <a class=" text-white font-weight-bold" href="@Url.Action("Details", "Season", new { id = item.SeasonId })">
+
+                            @Html.DisplayFor(modelItem => item.Serie.Name)
+                        </a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartDate.Date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EndDate.Date)
+                    </td>
+                    <td>
+                        <p> @Html.DisplayFor(modelItem => item.Active)</p>
+                    </td>
+                    <td>
+                        <a href="@Url.Action("Edit", "Season", new { id = item.SeasonId })">
+                            <i class="bi bi-pencil text-dark m-1"></i>
+                        </a>
+                        <a href="@Url.Action("Delete", "Season", new { id = item.SeasonId })">
+                            <i class="bi bi-trash text-danger mr-1"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+    @if (pageNr != 2)
+    {
+        <a class="btn btn-dark " href="@Url.Action("Index", "Season",new { pageNr = pageNr - 2})">Previous</a>
+
+    }
+
+    @if (TempData["Error"] is null)
+    {
+
+        <a class="btn btn-info text-white">@currPage</a>
+        <a class="btn btn-dark" href="@Url.Action("Index", "Season",new { pageNr = pageNr })"> @pageNr </a>
+        <a class="btn btn-dark" href="@Url.Action("Index", "Season",  new { pageNr = pageNr + 1 })"> @thirdPage</a>
+        <a class="btn btn-dark" href="@Url.Action("Index", "Season", new { pageNr = pageNr} )">Next</a>
+    }
+
+

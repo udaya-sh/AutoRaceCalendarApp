@@ -1,0 +1,77 @@
+﻿@model IEnumerable<AutoRaceCalendarApp.UI.Models.Team.TeamViewModel>
+
+@{
+    ViewData["Title"] = "Teams";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var pageNr = (int)TempData["pageNr"];
+    var currPage = pageNr;
+    pageNr++;
+    int _amount = (int)TempData["amount"];
+    var thirdPage = pageNr + 1;
+
+}
+
+<h1>All Teams</h1>
+
+@if (TempData["Error"] != null)
+{
+    <div class="col-md-12 alert alert-danger">
+        <span>@TempData["Error"] </span>
+    </div>
+}
+<form asp-action="SetAmount" class="form-row">
+    <p>
+        <label class="text-dark">Set rows</label>
+        <input type="text" name="amount" placeholder="Set Rows" class="input-group-lg form-control-sm text-center" value=@TempData["amount"] />
+    </p>
+    <p class="ml-1">
+        <input type="text" name="searchString" placeholder="Team name" class="input-group-lg form-control-sm" value=@TempData["searchString"] />
+        <input type="submit" value="Apply" class="btn-sm btn-dark " />
+    </p>
+</form>
+
+<table class="table table-info" >
+    <thead>
+        <tr>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                <a class="btn btn-info" asp-action="Create">Add New</a>
+
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@if (pageNr != 2)
+{
+    <a class="btn btn-dark" href="@Url.Action("Index", "Team",new { pageNr = pageNr - 2, searchString = TempData["searchString"], amount = _amount })">Previous</a>
+
+}
+
+@if (TempData["Error"] is null)
+{
+
+    <a class="btn btn-info">@currPage</a>
+    <a class="btn btn-dark" href="@Url.Action("Index", "Team",new { pageNr = pageNr, searchString = TempData["searchString"], amount = _amount })"> @pageNr </a>
+    <a class="btn btn-dark" href="@Url.Action("Index", "Team",  new { pageNr = pageNr + 1, searchString = TempData["searchString"], amount = _amount })"> @thirdPage</a>
+    <a class="btn btn-dark" href="@Url.Action("Index", "Team", new { pageNr = pageNr, searchString = TempData["searchString"], amount = _amount } )">Next</a>
+}
